@@ -1,0 +1,26 @@
+.three-earth {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.earth-canvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+    outline: none;
+    mix-blend-mode: exclusion;
+}
+
+.container {
+    height: 100%;
+    display: grid;
+    place-items: center;
+}
+
+.container h1 {
+    font-size: 8rem;
+    text-transform: uppercase;
+    color: white;
+    font-weight: 800 !important;
+}
