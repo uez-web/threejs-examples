@@ -1,19 +1,23 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import * as dat from "dat.gui";
-import useMouse from "./useMouse";
+import useMouse from "../../hooks/useMouse";
+import useWindowResize from "../../hooks/useWindowResize";
+import {
+  scene,
+  camera,
+  renderer,
+  sizes,
+  createRenderer,
+  onWindowResize,
+} from "../../util/createThree";
+
 // loading
 const textureLoader = new THREE.TextureLoader();
 // Get the normal map here https://www.filterforge.com/filters/1519-normal.html
 const earthNormalTexture = textureLoader.load("/static/EarthNormalMap.jpg");
 // Debug
 // const gui = new dat.GUI();
-// Renderer
-let renderer: any;
-let scene: any;
-let camera: any;
-// Scene
-scene = new THREE.Scene();
 // Objects
 const geometry = new THREE.SphereGeometry(0.7, 64, 64);
 // Materials
@@ -102,27 +106,7 @@ scene.add(pointLight3);
 // const pointLightHelper3 = new THREE.PointLightHelper(pointLight3, 1);
 // scene.add(pointLightHelper3);
 
-// Sizes
-const sizes = {
-  width: window.innerWidth,
-  height: window.innerHeight,
-};
-
-window.addEventListener("resize", () => {
-  // Update sizes
-  sizes.width = window.innerWidth;
-  sizes.height = window.innerHeight;
-
-  // Update camera
-  camera.aspect = sizes.width / sizes.height;
-  camera.updateProjectionMatrix();
-
-  // Update renderer
-  renderer.setSize(sizes.width, sizes.height);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-});
 // Camera
-camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100);
 camera.position.x = 0;
 camera.position.y = 0;
 camera.position.z = 2;
@@ -158,13 +142,12 @@ const useEarth: any = () => {
   };
 
   useEffect(() => {
-    renderer = new THREE.WebGLRenderer({
-      canvas: earthCanvas.current,
-      alpha: true,
-    });
+    createRenderer(earthCanvas.current, { alpha: true });
     renderer.setSize(sizes.width, sizes.height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   }, []);
+
+  useWindowResize(onWindowResize);
 
   useEffect(() => {
     document.addEventListener("scroll", onWindowScroll);
