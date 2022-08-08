@@ -1,9 +1,9 @@
 import React from "react";
-import useEarth from "./useEarth";
-import "./earth.css";
+import useCase1 from "./useCase1";
+import "./case1.css";
 
 const Earth: React.FC = () => {
-  const { earthCanvas } = useEarth();
+  const { earthCanvas } = useCase1();
 
   return (
     <div className="three-earth">

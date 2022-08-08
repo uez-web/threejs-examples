@@ -3,6 +3,7 @@ import * as THREE from "three";
 import * as dat from "dat.gui";
 import useMouse from "../../hooks/useMouse";
 import useWindowResize from "../../hooks/useWindowResize";
+import useFrame from "../../hooks/useFrame";
 import {
   scene,
   camera,
@@ -114,11 +115,21 @@ scene.add(camera);
 
 const clock = new THREE.Clock();
 
-const useEarth: any = () => {
+const useCase1: any = () => {
   const earthCanvas = useRef<any>(null);
   const mouseLocation = useMouse();
 
-  const tick = () => {
+  const onWindowScroll = () => {
+    sphere.position.y = window.scrollY * 0.001;
+  };
+
+  useEffect(() => {
+    createRenderer(earthCanvas.current, { alpha: true });
+    renderer.setSize(sizes.width, sizes.height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  }, []);
+
+  useFrame(() => {
     mouseLocation.current.targetX = mouseLocation.current.mouseX * 0.001;
     mouseLocation.current.targetY = mouseLocation.current.mouseY * 0.001;
 
@@ -133,19 +144,7 @@ const useEarth: any = () => {
       -0.05 * (mouseLocation.current.targetY - sphere.rotation.x);
 
     renderer.render(scene, camera);
-    // Call tick again on the next frame
-    window.requestAnimationFrame(tick);
-  };
-
-  const onWindowScroll = () => {
-    sphere.position.y = window.scrollY * 0.001;
-  };
-
-  useEffect(() => {
-    createRenderer(earthCanvas.current, { alpha: true });
-    renderer.setSize(sizes.width, sizes.height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  }, []);
+  });
 
   useWindowResize(onWindowResize);
 
@@ -156,13 +155,9 @@ const useEarth: any = () => {
     };
   }, []);
 
-  useEffect(() => {
-    tick();
-  }, []);
-
   return {
     earthCanvas,
   };
 };
 
-export default useEarth;
+export default useCase1;
