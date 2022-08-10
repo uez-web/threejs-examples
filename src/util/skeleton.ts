@@ -1,25 +1,25 @@
 import * as THREE from "three";
 
 interface SkeletonProps {
-  canvas: HTMLCanvasElement | null;
+  container: HTMLDivElement | null;
   config?: object;
 }
 
 export default class Skeleton {
-  private readonly canvas: HTMLCanvasElement;
+  private readonly container: HTMLDivElement;
   public sizes: { width: number; height: number };
   public scene: any;
   public camera: any;
   public renderer: any;
 
   constructor(props: SkeletonProps) {
-    if (!props.canvas) {
-      throw Error("props canvas is must set!");
+    if (!props.container) {
+      throw Error("props container is must set!");
     }
-    this.canvas = props.canvas;
+    this.container = props.container;
     this.sizes = {
-      width: this.canvas.offsetWidth,
-      height: this.canvas.offsetHeight,
+      width: this.container.offsetWidth,
+      height: this.container.offsetHeight,
     };
 
     this.scene = new THREE.Scene();
@@ -30,14 +30,16 @@ export default class Skeleton {
       100
     );
     this.renderer = new THREE.WebGLRenderer({
-      canvas: this.canvas,
       ...(props.config || {}),
     });
+    this.renderer.physicallyCorrectLights = true;
+    this.renderer.outputEncoding = THREE.sRGBEncoding;
+    this.container.appendChild(this.renderer.domElement);
   }
 
   setSizes() {
-    this.sizes.width = this.canvas.offsetWidth;
-    this.sizes.height = this.canvas.offsetHeight;
+    this.sizes.width = this.container.offsetWidth;
+    this.sizes.height = this.container.offsetHeight;
   }
 
   setRenderer() {
