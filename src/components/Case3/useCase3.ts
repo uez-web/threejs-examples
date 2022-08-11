@@ -91,7 +91,7 @@ const useCase3 = () => {
         new THREE.BufferAttribute(reference, 2)
       );
 
-      geometry = new THREE.IcosahedronBufferGeometry();
+      // geometry = new THREE.IcosahedronBufferGeometry();
 
       const face = new THREE.Points(geometry, material);
 
