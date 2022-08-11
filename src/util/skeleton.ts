@@ -29,9 +29,7 @@ export default class Skeleton {
       0.1,
       100
     );
-    this.renderer = new THREE.WebGLRenderer({
-      ...(props.config || {}),
-    });
+    this.renderer = new THREE.WebGLRenderer(props.config || {});
     this.renderer.physicallyCorrectLights = true;
     this.renderer.outputEncoding = THREE.sRGBEncoding;
     this.container.appendChild(this.renderer.domElement);
